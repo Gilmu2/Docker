@@ -1,0 +1,63 @@
+---------------------
+Create Network
+---------------------
+
+docker network create goals-net
+--------------------
+Build Mongo Image
+--------------------
+
+docker build -t mongo .
+
+--------------------
+Run Mongo Container
+--------------------
+
+docker run --name mongodb \
+--network goals-net \
+-v data:/data/db \
+--rm \
+-d \
+mongo  
+
+--------------------
+Build Backend Image
+--------------------
+
+docker build -t goals-node . 
+
+--------------------
+Run Backend Container
+--------------------
+
+docker run --name goals-backend \
+-p 80:80 \
+--rm \
+-d \
+--network goals-net \
+-v logs:/app/logs \
+-v $(pwd):/app \
+-v /app/node_modules \
+goals-node    
+
+--------------------
+Build Frontend Image
+--------------------
+
+docker build -t docker-react .
+
+--------------------
+Run Frontend Container
+--------------------
+docker run --name goals-frontend \
+--rm \
+-p 3000:3000 \
+-it \
+-v /Users/gilmu/source/repos/Docker/multi-01-starting-setup/frontend/src:/app/src \
+docker-react
+
+---------------------
+Stop all Containers
+---------------------
+
+docker stop mongodb goals-backend goals-frontend
