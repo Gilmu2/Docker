@@ -14,7 +14,7 @@ function GoalInput(props) {
     event.preventDefault();
 
     if (enteredGoalText.trim().length === 0) {
-      alert('Invalid text - please enter a longer one!');
+      alert('Invalid text -  enter a longer one!');
       return;
     }
 
